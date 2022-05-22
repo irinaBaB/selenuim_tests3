@@ -12,6 +12,7 @@ class GroupHelper:
     def create(self, group):
         wd = self.tot.wd
         self.open_groups_page()
+        wd.find_element(By.NAME, "new").click()
         wd.find_element(By.NAME, "group_name").click()
         wd.find_element(By.NAME, "group_name").clear()
         wd.find_element(By.NAME, "group_name").send_keys(group.name)
@@ -23,7 +24,14 @@ class GroupHelper:
         wd.find_element(By.NAME, "submit").click()
         self.return_to_groups_page()
 
+    def delete_first_group(self):
+        wd = self.tot.wd
+        self.open_groups_page()
+        wd.find_element(By.NAME,"selected[]").click()
+        wd.find_element(By.NAME,"delete").click()
+        self.return_to_groups_page()
+
+
     def open_groups_page(self):
         wd = self.tot.wd
         wd.find_element(By.LINK_TEXT, 'groups').click()
-        wd.find_element(By.NAME, "new").click()
