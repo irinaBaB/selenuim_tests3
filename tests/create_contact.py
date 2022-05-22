@@ -85,7 +85,7 @@ class Test3(unittest.TestCase):
 
     def open_home_page(self):
         wd = self.wd
-        wd.get("http://localhost:8081/addressbook/index.php")
+        wd.get("http://localhost:8081/addressbook/")
 
     def tearDown(self):
         self.wd.quit()
