@@ -14,25 +14,25 @@ class Test3(unittest.TestCase):
 
 
     def test_add_contact(self):
-        wd = self.wd
-        self.open_home_page(wd)
-        self.login(wd, username="admin", password="secret")
-        self.open_contact_page(wd)
-        self.create_contact(wd,Contact(firstname="lola", lastname="poni", title="mr", companyname="cola",
+        self.login(username="admin", password="secret")
+        self.create_contact(Contact(firstname="lola", lastname="poni", title="mr", companyname="cola",
                                     nickname="fgfgfgf",address="2/4 finland street", workphone="0927689",
                                     email="izir@gmail.com", birthday="3",bmonth="April", byear="1973"))
-        self.return_to_home_page(wd)
-        self.logout(wd)
+        self.logout()
 
-    def logout(self, wd):
+    def logout(self):
+        wd = self.wd
         wd.find_element(By.LINK_TEXT, "Logout").click()
 
-    def return_to_home_page(self, wd):
+    def return_to_home_page(self):
+        wd = self.wd
         wd.get("http://localhost:8081/addressbook/")
         wd.find_element(By.LINK_TEXT, "home").click()
         wd.find_element(By.ID, "container").click()
 
-    def create_contact(self, wd, contact):
+    def create_contact(self,contact):
+        wd = self.wd
+        self.open_contact_page()
         wd.find_element(By.NAME, "firstname").click()
         wd.find_element(By.NAME, "firstname").clear()
         wd.find_element(By.NAME, "firstname").send_keys(contact.firstname)
@@ -66,12 +66,16 @@ class Test3(unittest.TestCase):
         wd.find_element(By.NAME, "byear").clear()
         wd.find_element(By.NAME, "byear").send_keys(contact.byear)
         wd.find_element(By.XPATH, "//div[@id='content']/form/input[21]").click()
+        self.return_to_home_page()
 
-    def open_contact_page(self, wd):
+    def open_contact_page(self):
+        wd = self.wd
         wd.find_element(By.LINK_TEXT, "add new").click()
         wd.get("http://localhost:8081/addressbook/edit.php")
 
-    def login(self, wd, username, password):
+    def login(self,username, password):
+        wd = self.wd
+        self.open_home_page()
         wd.find_element(By.NAME, "user").click()
         wd.find_element(By.NAME, "user").clear()
         wd.find_element(By.NAME, "user").send_keys(username)
@@ -79,7 +83,8 @@ class Test3(unittest.TestCase):
         wd.find_element(By.NAME, "pass").send_keys(password)
         wd.find_element(By.XPATH, "//input[@value='Login']").click()
 
-    def open_home_page(self, wd):
+    def open_home_page(self):
+        wd = self.wd
         wd.get("http://localhost:8081/addressbook/index.php")
 
     def tearDown(self):
