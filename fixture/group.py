@@ -13,42 +13,41 @@ class GroupHelper:
         wd = self.tot.wd
         self.open_groups_page()
         wd.find_element(By.NAME, "new").click()
-        wd.find_element(By.NAME, "group_name").click()
-        wd.find_element(By.NAME, "group_name").clear()
-        wd.find_element(By.NAME, "group_name").send_keys(group.name)
-        wd.find_element(By.NAME, "group_header").click()
-        wd.find_element(By.NAME, "group_header").clear()
-        wd.find_element(By.NAME, "group_header").send_keys(group.header)
-        wd.find_element(By.NAME, "group_footer").clear()
-        wd.find_element(By.NAME, "group_footer").send_keys(group.footer)
+        self.fill_group_form(group)
         wd.find_element(By.NAME, "submit").click()
         self.return_to_groups_page()
 
     def delete_first_group(self):
         wd = self.tot.wd
         self.open_groups_page()
-        wd.find_element(By.NAME,"selected[]").click()
+        self.select_first_group()
         wd.find_element(By.NAME,"delete").click()
         self.return_to_groups_page()
 
-    def edit_first_group(self,group):
+    def edit_first_group(self,new_group_data):
         wd = self.tot.wd
         self.open_groups_page()
-        wd.find_element(By.NAME, "selected[]").click()
+        self.select_first_group()
         wd.find_element(By.NAME,"edit").click()
-        wd.find_element(By.NAME, "group_name").click()
-        wd.find_element(By.NAME, "group_name").clear()
-        wd.find_element(By.NAME, "group_name").send_keys(group.name)
-        wd.find_element(By.NAME, "group_header").click()
-        wd.find_element(By.NAME, "group_header").clear()
-        wd.find_element(By.NAME, "group_header").send_keys(group.header)
-        wd.find_element(By.NAME, "group_footer").clear()
-        wd.find_element(By.NAME, "group_footer").send_keys(group.footer)
+        self.fill_group_form(new_group_data)
         wd.find_element(By.NAME, "update").click()
         self.return_to_groups_page()
 
+    def fill_group_form(self, group):
+        self.group_type_field(text='group_name',field_name=group.name)
+        self.group_type_field(text='group_header', field_name=group.header)
+        self.group_type_field(text='group_footer', field_name=group.footer)
 
+    def group_type_field(self,text,field_name):
+        wd = self.tot.wd
+        if field_name is not None:
+            wd.find_element(By.NAME,text).click()
+            wd.find_element(By.NAME,text).clear()
+            wd.find_element(By.NAME,text).send_keys(field_name)
 
+    def select_first_group(self):
+        wd = self.tot.wd
+        wd.find_element(By.NAME, "selected[]").click()
 
     def open_groups_page(self):
         wd = self.tot.wd
